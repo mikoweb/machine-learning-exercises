@@ -12,6 +12,7 @@ import pandas as pd
 import numpy as np
 from scipy.spatial import KDTree
 from sklearn.metrics import mean_absolute_error
+import matplotlib.pyplot as plt
 
 # Przykład - przewidywanie cen domów
 
@@ -63,16 +64,16 @@ train_values = values.loc[train_rows]
 # a następnie porównujemy wyniki z wynikami oryginalnymi przy użyciu funkcji średniego błędu bezwzględnego.
 
 
-train_predicted_values = []
-train_actual_values = []
+#train_predicted_values = []
+#train_actual_values = []
 
-for _id, row in df_train.iterrows():
-    train_predicted_values.append(predict(row, 5))
-    train_actual_values.append(train_values[_id])
+#for _id, row in df_train.iterrows():
+    #train_predicted_values.append(predict(row, 5))
+    #train_actual_values.append(train_values[_id])
 
 
-print(f'Wartosc sredniego bledu bezwzglednego na systemie treningowym dla k=5 wynosi: {mean_absolute_error(train_predicted_values, train_actual_values)}')
-
+#print(f'Wartosc sredniego bledu bezwzglednego na systemie treningowym dla k=5 wynosi: '
+      #f'{mean_absolute_error(train_predicted_values, train_actual_values)}')
 
 
 
@@ -91,3 +92,23 @@ print(f'Wartosc sredniego bledu bezwzglednego na systemie treningowym dla k=5 wy
 # 75% system treningowy i 25% system testowy
 
 
+# Zad. 1
+
+error_values = []
+max_k = 7
+
+for i in range(1, max_k):
+    train_predicted_values = []
+    train_actual_values = []
+
+    for _id, row in df_train.iterrows():
+        train_predicted_values.append(predict(row, i))
+        train_actual_values.append(train_values[_id])
+
+    error_values.append(mean_absolute_error(train_predicted_values, train_actual_values))
+
+print(error_values)
+# [5.436856161770317, 43161.33077785197, 52049.28989412438, 56557.50497782335, 59288.07842426555, 61366.96037612871]
+
+plt.plot(range(1, max_k), error_values)
+plt.show()
